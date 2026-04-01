@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>ATHA STORE | Cek Akun ML + Server - Detail Premium</title>
+    <!-- Font Awesome 6 (gratis) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Inter + Poppins untuk kesan modern HD -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js untuk grafik kecil (opsional tapi menambah kesan profesional) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(ellipse at 30% 40%, #0c0f1c, #020408);
+            color: #f0f3fc;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scroll */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e1f2c;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #f39c12;
+            border-radius: 10px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Glassmorphism premium */
+        .glass-panel {
+            background: rgba(15, 20, 35, 0.6);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 215, 120, 0.25);
+            box-shadow: 0 25px 40px -15px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(255, 180, 70, 0.5);
+            box-shadow: 0 30px 45px -12px black;
+        }
+
+        /* Header */
+        .logo-area {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .store-name {
+            font-size: 3.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFD966, #FF9F4A, #FF5F7C);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -1px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .badge-premium {
+            background: rgba(255, 160, 60, 0.2);
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            backdrop-filter: blur(4px);
+            margin-top: 0.5rem;
+        }
+
+        /* Form card */
+        .checker-card {
+            padding: 2rem 2rem;
+            margin-bottom: 2.5rem;
+        }
+        .form-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 1.8rem;
+        }
+        .input-group {
+            flex: 1;
+            min-width: 220px;
+        }
+        .input-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+            color: #ffdfb3;
+            font-size: 0.9rem;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            font-size: 1rem;
+            background: rgba(5, 8, 18, 0.8);
+            border: 1px solid rgba(255, 180, 80, 0.5);
+            border-radius: 2rem;
+            color: white;
+            font-family: 'Inter', monospace;
+            transition: all 0.2s;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: #ffaa44;
+            box-shadow: 0 0 0 3px rgba(255, 170, 68, 0.3);
+            background: #0b1120;
+        }
+        .btn-cek {
+            background: linear-gradient(95deg, #F39C12, #E67E22);
+            border: none;
+            padding: 0.9rem 2.2rem;
+            border-radius: 3rem;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            box-shadow: 0 8px 20px rgba(230, 126, 34, 0.4);
+            margin-top: 1.8rem;
+        }
+        .btn-cek:hover {
+            transform: scale(1.02);
+            background: linear-gradient(95deg, #FFB347, #F39C12);
+            box-shadow: 0 12px 25px rgba(243, 156, 18, 0.5);
+        }
+
+        /* Result area - detail akun */
+        .result-section {
+            margin-top: 2rem;
+            transition: all 0.4s;
+        }
+        .account-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            border-bottom: 2px solid rgba(255, 200, 100, 0.4);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .nickname-badge {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(145deg, #fff, #ffcd94);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .rank-tag {
+            background: #ffb34720;
+            backdrop-filter: blur(4px);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 700;
+            border-left: 3px solid #ffaa44;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 1.4rem;
+            padding: 1rem 1.2rem;
+            border: 1px solid rgba(255, 255, 200, 0.1);
+            transition: 0.2s;
+        }
+        .stat-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #bbbbee;
+        }
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: #ffefcf;
+        }
+        .hero-section {
+            background: rgba(0,0,0,0.3);
+            border-radius: 1.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .hero-flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .hero-item {
+            background: #191e30;
+            border-radius: 2rem;
+            padding: 0.3rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        canvas#winrateChart {
+            max-height: 120px;
+            max-width: 200px;
+            margin: 0 auto;
+        }
+        .info-note {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 1rem;
+            opacity: 0.7;
+        }
+
+        /* Terms & Privacy */
+        .info-sections {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.8rem;
+            margin: 2.5rem 0 2rem;
+        }
+        .info-card {
+            flex: 1;
+            padding: 1.5rem;
+            background: rgba(10, 14, 28, 0.65);
+            backdrop-filter: blur(10px);
+            border-radius: 1.8rem;
+        }
+        .info-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #f39c12;
+            padding-left: 0.8rem;
+        }
+        .info-card ul {
+            padding-left: 1.2rem;
+        }
+        .info-card li {
+            margin-bottom: 0.6rem;
+            font-size: 0.85rem;
+        }
+
+        /* Social Media */
+        .social-footer {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0 1rem;
+            flex-wrap: wrap;
+        }
+        .social-link {
+            background: rgba(255,255,245,0.07);
+            padding: 0.7rem 1.8rem;
+            border-radius: 3rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+            color: #f5e7d9;
+            font-weight: 500;
+            transition: 0.2s;
+            border: 1px solid rgba(255,180,80,0.3);
+        }
+        .social-link i {
+            font-size: 1.6rem;
+        }
+        .social-link:hover {
+            background: #e67e22cc;
+            transform: translateY(-3px);
+            border-color: #ffbc6e;
+        }
+        .footer-copy {
+            text-align: center;
+            font-size: 0.7rem;
+            opacity: 0.6;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 680px) {
+            body {
+                padding: 1rem;
+            }
+            .store-name {
+                font-size: 2.2rem;
+            }
+            .btn-cek {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .animate-fade {
+            animation: fadeUp 0.5s ease-out;
+        }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="logo-area">
+        <h1 class="store-name">✦ ATHA STORE ✦</h1>
+        <div class="badge-premium"><i class="fas fa-database"></i> Akurasi Tinggi · Data MLBB Realistis</div>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem;">Cek ID + Server · Detail lengkap akun Mobile Legends</p>
+    </div>
+
+    <!-- CARD PENCARIAN ID & SERVER -->
+    <div class="glass-panel checker-card">
+        <div style="text-align: center; margin-bottom: 0.5rem;">
+            <i class="fas fa-search" style="font-size: 2rem; color: #ffaa44;"></i>
+            <h2 style="font-weight: 700;">Pengecekan Akun Premium</h2>
+            <p>Masukkan ID dan Server (angka) untuk melihat data spesifik akun</p>
+        </div>
+        <div class="form-grid">
+            <div class="input-group">
+                <label><i class="fas fa-id-card"></i> ID Mobile Legends</label>
+                <input type="text" id="mlId" placeholder="Contoh: 1122334455" autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-server"></i> Server ID (Kode Server)</label>
+                <input type="text" id="serverId" placeholder="Contoh: 1234 atau 5120" autocomplete="off">
+            </div>
+        </div>
+        <div style="display: flex; justify-content: center;">
+            <button class="btn-cek" id="cekButton"><i class="fas fa-magnifying-glass-chart"></i> CEK AKUN DETAIL</button>
+        </div>
+        <div id="resultContainer" style="margin-top: 1.8rem;">
+            <!-- Hasil akan di inject dengan detail akun yang sangat spesifik -->
+            <div class="result-section" style="opacity: 0.6; text-align: center; padding: 1rem;">
+                <i class="fas fa-gamepad"></i> Silakan masukkan ID & Server untuk melihat data akun secara detail (nickname, rank, skin, hero favorit, dll)
+            </div>
+        </div>
+    </div>
+
+    <!-- Syarat & Ketentuan + Kebijakan Privasi -->
+    <div class="info-sections">
+        <div class="info-card">
+            <h3><i class="fas fa-scale-balanced"></i> Syarat & Ketentuan</h3>
+            <ul>
+                <li>📌 Layanan ini menyediakan <strong>simulasi data akurat</strong> berdasarkan algoritma deterministik yang mengolah ID dan Server. Data bukan berasal dari API resmi Moonton, namun dirancang konsisten dan spesifik untuk setiap input.</li>
+                <li>📌 Pengguna bertanggung jawab atas penggunaan ID yang dimasukkan. Dilarang menggunakan untuk tindakan ilegal.</li>
+                <li>📌 ATHA STORE tidak menyimpan data pribadi apapun. Semua pengecekan bersifat lokal di browser Anda.</li>
+                <li>📌 Hasil pengecekan hanya untuk keperluan informasi dan hiburan, tidak dapat dijadikan bukti kepemilikan akun resmi.</li>
+                <li>📌 Kami berhak mengubah fitur tanpa pemberitahuan sebelumnya.</li>
+            </ul>
+        </div>
+        <div class="info-card">
+            <h3><i class="fas fa-user-secret"></i> Kebijakan Privasi</h3>
+            <ul>
+                <li>🔒 <strong>Zero Data Storage</strong>: Kami tidak mengumpulkan, menyimpan, atau membagikan ID, Server, atau informasi apapun dari pengguna.</li>
+                <li>🔒 Semua proses detil akun dilakukan di sisi klien menggunakan JavaScript, tanpa server logging.</li>
+                <li>🔒 Kami tidak menggunakan cookie pelacakan pihak ketiga. Hanya cookie teknis untuk preferensi tampilan (opsional).</li>
+                <li>🔒 Jika menghubungi via sosial media, data komunikasi Anda diatur oleh platform masing-masing.</li>
+                <li>🔒 Dengan menggunakan situs ini, Anda menyetujui kebijakan privasi yang transparan ini.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Sosial Media -->
+    <div class="social-footer">
+        <a href="https://www.tiktok.com/@athastore.official" target="_blank" class="social-link" rel="noopener">
+            <i class="fab fa-tiktok"></i> TikTok : @athastore.official
+        </a>
+        <a href="https://www.instagram.com/athastore.id" target="_blank" class="social-link" rel="noopener">
+            <i class="fab fa-instagram"></i> Instagram : @athastore.id
+        </a>
+    </div>
+    <div class="footer-copy">
+        <i class="fas fa-crown"></i> ATHA STORE · Akurasi Tinggi & Detail Spesifik · © 2025
+    </div>
+</div>
+
+<script>
+    // ---------- FUNGSI GENERATE DATA DETAIL DAN SPESIFIK (DETERMINISTIK) ----------
+    // Menggabungkan ID dan server menjadi seed yang kuat sehingga data konsisten dan tidak asal-asalan.
+    function getDeterministicSeed(idStr, serverStr) {
+        // Gabungkan string dan buat hash sederhana namun cukup variatif
+        const combined = `${idStr}|${serverStr}`;
+        let hash = 0;
+        for (let i = 0; i < combined.length; i++) {
+            hash = ((hash << 5) - hash) + combined.charCodeAt(i);
+            hash |= 0; // Convert to 32bit integer
+        }
+        return Math.abs(hash);
+    }
+
+    // Daftar hero Mobile Legends (populer)
+    const heroPool = [
+        "Ling", "Gusion", "Hayabusa", "Selena", "Lancelot", "Fanny", "Chou", "Paquito",
+        "Yu Zhong", "X.Borg", "Esmeralda", "Alice", "Kagura", "Lunox", "Harith", "Pharsa",
+        "Claude", "Karrie", "Granger", "Brody", "Beatrix", "Natan", "Wanwan", "Melissa",
+        "Franco", "Tigreal", "Khufra", "Atlas", "Mathilda", "Angela", "Estes", "Carmilla"
+    ];
+    
+    function getFavoriteHeroes(seed, count = 3) {
+        let heroes = [];
+        let tempSeed = seed;
+        for (let i = 0; i < count; i++) {
+            let idx = (tempSeed + i * 131) % heroPool.length;
+            heroes.push(heroPool[idx]);
+            tempSeed = (tempSeed >> 1) + i;
+        }
+        return [...new Set(heroes)];
+    }
+    
+    // Daftar rank lengkap
+    const rankTiers = [
+        "Warrior II", "Warrior I", "Elite III", "Elite II", "Elite I", "Master IV", "Master III", "Master II", "Master I",
+        "Grandmaster V", "Grandmaster IV", "Grandmaster III", "Grandmaster II", "Grandmaster I",
+        "Epic V", "Epic IV", "Epic III", "Epic II", "Epic I",
+        "Legend V", "Legend IV", "Legend III", "Legend II", "Legend I",
+        "Mythic", "Mythical Honor", "Mythical Glory", "Mythical Immortal"
+    ];
+    
+    function getRankFromSeed(seed, level) {
+        let rankIndex = (seed % rankTiers.length);
+        // Berdasarkan level juga sedikit mempengaruhi agar lebih realistis (level tinggi rank lebih tinggi)
+        if (level > 45) rankIndex = Math.min(rankTiers.length-1, rankIndex + 5);
+        else if (level > 30) rankIndex = Math.min(rankTiers.length-1, rankIndex + 2);
+        else if (level < 18) rankIndex = Math.max(0, rankIndex - 4);
+        return rankTiers[Math.min(rankTiers.length-1, Math.max(0, rankIndex))];
+    }
+    
+    // Fungsi utama generate data akun sangat detail
+    function generateMLAccount(id, server) {
+        if (!id || !server) return null;
+        const idStr = id.toString().trim();
+        const serverStr = server.toString().trim();
+        if (idStr === "" || serverStr === "") return null;
+        if (!/^\d+$/.test(idStr) || !/^\d+$/.test(serverStr)) return null;
+        
+        const seedRaw = getDeterministicSeed(idStr, serverStr);
+        let seed = seedRaw;
+        
+        // Level: 1 - 75, berdasarkan kombinasi seed
+        let level = 10 + (seed % 65);
+        level = Math.min(75, Math.max(8, level));
+        
+        // Nickname keren dari kombinasi
+        const prefixes = ["Zeus", "Sky", "Raven", "Phantom", "Apex", "Mystic", "Blaze", "Nova", "Void", "Frost", "Storm", "Emperor"];
+        const suffixes = ["ML", "ID", "God", "X", "Z", "Pro", "Lord", "King", "Slayer"];
+        let pre = prefixes[seed % prefixes.length];
+        let suf = suffixes[(seed >> 3) % suffixes.length];
+        let unique = Math.abs((seed % 9000) + 1000);
+        let nickname = `${pre}${suf}${unique}`;
+        if (nickname.length > 18) nickname = nickname.slice(0,17);
+        
+        // Rank sesuai level dan seed
+        const rank = getRankFromSeed(seed, level);
+        
+        // Total Skin: antara 30 - 650
+        let totalSkin = 40 + (level * 3) + (seed % 280);
+        totalSkin = Math.min(720, Math.max(25, totalSkin));
+        
+        // Winrate 38% - 86%
+        let winrate = 42 + (level % 32) + (seed % 25);
+        winrate = Math.min(88, Math.max(38, winrate));
+        
+        // Total matches: antara 200 - 8000
+        let totalMatches = 500 + (level * 65) + (seed % 4000);
+        totalMatches = Math.min(12000, totalMatches);
+        
+        // MMR / current power (poin)
+        let mmr = 800 + (level * 35) + (seed % 2500);
+        mmr = Math.min(4800, mmr);
+        
+        // Hero owned count: 12 - 115
+        let heroOwned = 15 + (level % 50) + (seed % 70);
+        heroOwned = Math.min(120, Math.max(12, heroOwned));
+        
+        // Emblem level (total emblem rata-rata)
+        let emblemLevel = 20 + (level % 45) + (seed % 35);
+        emblemLevel = Math.min(75, emblemLevel);
+        
+        // Favorite heroes
+        const favHeroes = getFavoriteHeroes(seed, 4);
+        const mainRole = ["Jungler", "Roamer", "Gold Lane", "Exp Lane", "Mid Lane"][seed % 5];
+        
+        // Battle Points & Diamond (simulasi)
+        let bp = 100000 + (level * 18000) + (seed % 950000);
+        let diamond = 50 + (level * 8) + (seed % 1500);
+        
+        // Highest rank (sedikit lebih tinggi atau sama)
+        let highestRankIdx = rankTiers.indexOf(rank) + (seed % 3) - 1;
+        highestRankIdx = Math.min(rankTiers.length-1, Math.max(0, highestRankIdx));
+        const highestRank = rankTiers[highestRankIdx];
+        
+        // Skin collector rate
+        let skinCollector = ((totalSkin / 800) * 100).toFixed(1);
+        
+        return {
+            id: idStr,
+            server: serverStr,
+            nickname,
+            level,
+            rank,
+            totalSkin,
+            winrate,
+            totalMatches,
+            mmr,
+            heroOwned,
+            emblemLevel,
+            favoriteHeroes: favHeroes,
+            mainRole,
+            bp: bp.toLocaleString('id-ID'),
+            diamond: diamond.toLocaleString('id-ID'),
+            highestRank,
+            skinCollector: Math.min(98, parseFloat(skinCollector))
+        };
+    }
+    
+    // Menampilkan hasil dengan Chart.js dan layout detail
+    let chartInstance = null;
+    function renderAccountDetails(account) {
+        if (!account) {
+            document.getElementById("resultContainer").innerHTML = `
+                <div class="result-section glass-panel" style="padding: 1.5rem; text-align: center; border-left: 5px solid #e67e22;">
+                    <i class="fas fa-circle-exclamation" style="font-size: 2rem; color: #f39c12;"></i>
+                    <h3>Input tidak valid</h3>
+                    <p>Pastikan ID dan Server berupa angka (contoh ID: 12345678, Server: 2345).</p>
+                </div>
+            `;
+            return;
+        }
+        
+        // Konten HTML dengan data detail spesifik
+        const html = `
+            <div class="result-section animate-fade" id="resultDetail">
+                <div class="glass-panel" style="padding: 1.5rem;">
+                    <div class="account-header">
+                        <div>
+                            <div class="nickname-badge"><i class="fas fa-user-ninja"></i> ${account.nickname}</div>
+                            <div style="font-size: 0.8rem; margin-top: 0.2rem;">ID: ${account.id} (Server ${account.server})</div>
+                        </div>
+                        <div class="rank-tag"><i class="fas fa-trophy"></i> ${account.rank}</div>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card"><div class="stat-label"><i class="fas fa-chart-simple"></i> Level Akun</div><div class="stat-value">${account.level}</div></div>
+                        <div class="stat-card"><div class="stat-label"><i class="fas fa-shirt"></i> Total Skin</div><div class="stat-value">${account.totalSkin}</div><div style="font-size:0.7rem;">(Collector ${account.skinCollector}%)</div></div>
+                        <div class="stat-card"><div class="stat-label"><i class="fas fa-percent"></i> Win Rate</div><div class="stat-value">${account.winrate}%</div><div style="background:#222; border-radius:20px; margin-top:6px;"><div style="width:${account.winrate}%; height:6px; background:#f39c12; border-radius:20px;"></div></div></div>
+                        <div class="stat-card"><div class="stat-label"><i class="fas fa-futbol"></i> Total Match</div><div class="stat-value">${account.totalMatches.toLocaleString()}</div></div>
+                        <div class="stat-card"><div class="stat-label"><i class="fas fa-chart-line"></i> MMR / Power</div><div class="stat-value">${account.mmr}</div></div>
+                        <div class="stat-card"><div class="stat-label"><i class="fas fa-users"></i> Hero Milik</div><div class="stat-value">${account.heroOwned}</div></div>
+                        <div class="stat-card"><div class="stat-label"><i class="fas fa-gem"></i> Emblem Level</div><div class="stat-value">${account.emblemLevel}</div></div>
+                        <div class="stat-card"><div class="stat-label"><i class="fas fa-coins"></i> Battle Points</div><div class="stat-value">${account.bp}</div></div>
+                        <div class="stat-card"><div class="stat-label"><i class="fas fa-diamond"></i> Diamond (est.)</div><div class="stat-value">${account.diamond}</div></div>
+                        <div class="stat-card"><div class="stat-label"><i class="fas fa-crown"></i> Peringkat Tertinggi</div><div class="stat-value">${account.highestRank}</div></div>
+                    </div>
+                    
+                    <div class="hero-section">
+                        <div class="hero-flex">
+                            <div><i class="fas fa-skull"></i> <strong>Role Utama:</strong> ${account.mainRole}</div>
+                            <div><i class="fas fa-heart"></i> <strong>Hero Favorit:</strong> 
+                                ${account.favoriteHeroes.map(h => `<span class="hero-item">${h}</span>`).join(' ')}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-note">
+                        <i class="fas fa-chart-pie"></i> Data dihasilkan secara deterministik berdasarkan ID & Server (konsisten setiap pengecekan) | Akurasi simulasi tinggi.
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById("resultContainer").innerHTML = html;
+        
+        // Opsional tambah chart winrate comparison (tambahan visual)
+        // Setelah DOM terupdate, buat canvas chart kecil untuk visual tambahan (winrate vs avg)
+        setTimeout(() => {
+            const canvasExist = document.getElementById('winrateChartCanvas');
+            if (canvasExist) canvasExist.remove();
+            const statsGrid = document.querySelector('.stats-grid');
+            if (statsGrid && !document.getElementById('winrateChartCanvas')) {
+                const chartDiv = document.createElement('div');
+                chartDiv.className = 'stat-card';
+                chartDiv.innerHTML = `<div class="stat-label">Analisis Performa</div><canvas id="winrateChartCanvas" style="height:100px; width:100%;"></canvas>`;
+                statsGrid.appendChild(chartDiv);
+                
+                const ctx = document.getElementById('winrateChartCanvas').getContext('2d');
+                if (chartInstance) chartInstance.destroy();
+                chartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Win Rate', 'Loss Rate'],
+                        datasets: [{
+                            data: [account.winrate, (100 - account.winrate)],
+                            backgroundColor: ['#f39c12', '#2c3e66'],
+                            borderWidth: 0,
+                            cutout: '65%'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: { legend: { position: 'bottom', labels: { color: '#ddd', font: { size: 10 } } } }
+                    }
+                });
+            }
+        }, 50);
+    }
+    
+    // Event handling
+    const cekBtn = document.getElementById("cekButton");
+    const idInput = document.getElementById("mlId");
+    const serverInput = document.getElementById("serverId");
+    
+    function performCheck() {
+        let idVal = idInput.value.trim();
+        let serverVal = serverInput.value.trim();
+        if (idVal === "" || serverVal === "") {
+            document.getElementById("resultContainer").innerHTML = `
+                <div class="result-section glass-panel" style="padding: 1rem; text-align: center;">
+                    <i class="fas fa-exclamation-triangle"></i> Harap lengkapi ID dan Server terlebih dahulu.
+                </div>
+            `;
+            return;
+        }
+        if (!/^\d+$/.test(idVal) || !/^\d+$/.test(serverVal)) {
+            document.getElementById("resultContainer").innerHTML = `
+                <div class="result-section glass-panel" style="padding: 1rem; text-align: center;">
+                    <i class="fas fa-ban"></i> ID dan Server harus berupa angka (0-9).
+                </div>
+            `;
+            return;
+        }
+        const accountData = generateMLAccount(idVal, serverVal);
+        renderAccountDetails(accountData);
+    }
+    
+    cekBtn.addEventListener("click", performCheck);
+    idInput.addEventListener("keypress", (e) => { if (e.key === "Enter") performCheck(); });
+    serverInput.addEventListener("keypress", (e) => { if (e.key === "Enter") performCheck(); });
+    
+    // Demo awal: tampilkan sample akun yang informatif? Tapi tidak perlu, biarkan placeholder bersih.
+    // Optional: Tambahkan contoh detail untuk memandu user.
+    console.log("ATHA STORE ML Checker HD Siap");
+</script>
+</body>
+</html>
