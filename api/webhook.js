@@ -603,6 +603,14 @@ module.exports = async (req, res) => {
     return res.status(200).send("ATHA STORE ONLINE");
   }
 
+  // KEAMANAN WEBHOOK
+  if (
+    req.headers["x-telegram-bot-api-secret-token"] !==
+    process.env.WEBHOOK_SECRET
+  ) {
+    return res.status(403).send("Forbidden");
+  }
+
   try {
     await bot.handleUpdate(req.body);
     return res.status(200).send("OK");
