@@ -10,6 +10,7 @@ const db = createClient(
 );
 
 const ADMIN_ID = Number(process.env.ADMIN_ID);
+const GROUP_ID = process.env.GROUP_ID;
 const STORE = "ATHA STORE";
 
 const rupiah = n =>
@@ -591,6 +592,50 @@ bot.action("contact", async ctx => {
     "👨‍💻 Untuk bantuan, silakan hubungi admin ATHA STORE."
   );
 });
+
+
+// MELIHAT ID GRUP
+bot.command("id", async ctx => {
+  if (!isAdmin(ctx.from.id)) return;
+
+  await ctx.reply(
+    `ID Grup ini: ${ctx.chat.id}`
+  );
+});
+
+// KIRIM PESAN KE GRUP
+bot.command("kirim", async ctx => {
+  if (!isAdmin(ctx.from.id)) {
+    return ctx.reply("⛔ Khusus admin!");
+  }
+
+  const message = ctx.message.text
+    .replace(/^\/kirim(?:@\w+)?\s*/, "")
+    .trim();
+
+  if (!message) {
+    return ctx.reply(
+      "Contoh: /kirim jajan yu"
+    );
+  }
+
+  if (!GROUP_ID) {
+    return ctx.reply("GROUP_ID belum diatur!");
+  }
+
+  try {
+    await bot.telegram.sendMessage(
+      GROUP_ID,
+      message
+    );
+
+    await ctx.reply("✅ Pesan berhasil dikirim ke grup!");
+  } catch (error) {
+    console.error(error);
+    await ctx.reply("❌ Gagal mengirim pesan ke grup.");
+  }
+});
+
 
 // ERROR HANDLER
 bot.catch((err, ctx) => {
